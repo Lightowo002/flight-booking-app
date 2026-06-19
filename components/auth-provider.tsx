@@ -22,6 +22,7 @@ interface AuthContextValue {
   user: AuthUser | null;
   isReady: boolean;
   login: (email: string, password: string) => Promise<AuthUser>;
+  loginWithGoogle: (token: string) => Promise<AuthUser>;
   register: (data: RegisterData) => Promise<AuthUser>;
   logout: () => void;
 }
@@ -81,6 +82,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return nextUser;
   };
 
+  const loginWithGoogle = async (token: string) => {
+    const response = await fetch(`${API_URL}/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'No se pudo iniciar sesión con Google');
+    }
+
+    const data = await response.json();
+
+    const nextUser: AuthUser = {
+      firstName: data.usuario.nombres,
+      lastName: data.usuario.apellidos,
+      email: data.usuario.correo,
+    };
+    persist(nextUser);
+    return nextUser;
+  };
+
   const register = async (data: RegisterData) => {
     const response = await fetch(`${API_URL}/registro`, {
       method: 'POST',
@@ -117,7 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isReady, login, register, logout }}>
+    <AuthContext.Provider value={{ user, isReady, login, loginWithGoogle, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

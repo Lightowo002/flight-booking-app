@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 
+const API_URL = 'https://localhost:7118/api/auth';
+
 export function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -23,11 +25,29 @@ export function ForgotPasswordForm() {
     }
 
     setIsLoading(true);
-    // Simular envío de email
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log('Email de recuperación enviado a:', email);
-    setSubmitted(true);
-    setIsLoading(false);
+
+    try {
+      const response = await fetch(`${API_URL}/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo: email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'No se pudo enviar el correo');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Ocurrió un error inesperado');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (submitted) {

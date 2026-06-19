@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AuthProvider } from '@/components/auth-provider'
 import { NavProvider } from '@/components/nav-provider'
@@ -10,6 +11,8 @@ import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
+
+const GOOGLE_CLIENT_ID = '829046570930-bp5aupuas7kup7h4q9jensc90lt02k5h.apps.googleusercontent.com';
 
 export const metadata: Metadata = {
   title: 'SkyTracker - Flight Tracking & Booking',
@@ -42,16 +45,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="font-sans antialiased bg-background text-foreground">
-        <ThemeProvider>
-          <AuthProvider>
-            <NavProvider>
-              <GlobalNav />
-              <AppShell>
-                {children}
-              </AppShell>
-            </NavProvider>
-          </AuthProvider>
-        </ThemeProvider>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+          <ThemeProvider>
+            <AuthProvider>
+              <NavProvider>
+                <GlobalNav />
+                <AppShell>
+                  {children}
+                </AppShell>
+              </NavProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </GoogleOAuthProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
