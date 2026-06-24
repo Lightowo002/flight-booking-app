@@ -100,6 +100,10 @@ export function FlightMap({
 
     // Add or update markers
     flights.forEach((flight) => {
+      if (typeof flight.latitude !== "number" || typeof flight.longitude !== "number") {
+        return;
+      }
+
       const isSelected = selectedFlight?.icao24 === flight.icao24;
       const existingMarker = currentMarkers.get(flight.icao24);
 
@@ -136,11 +140,25 @@ export function FlightMap({
 
     if (!selectedFlight) return;
 
-    // Draw route if we have origin/destination
-    if (selectedFlight.originInfo && selectedFlight.destinationInfo) {
+    if (typeof selectedFlight.latitude !== "number" || typeof selectedFlight.longitude !== "number") {
+      return;
+    }
+
+    const origin = selectedFlight.originInfo;
+    const destination = selectedFlight.destinationInfo;
+    const hasValidRoute =
+      origin &&
+      destination &&
+      typeof origin.lat === "number" &&
+      typeof origin.lng === "number" &&
+      typeof destination.lat === "number" &&
+      typeof destination.lng === "number";
+
+    // Draw route if we have a complete, valid origin/destination
+    if (hasValidRoute) {
       // Origin marker
       L.circleMarker(
-        [selectedFlight.originInfo.lat, selectedFlight.originInfo.lng],
+        [origin.lat, origin.lng],
         {
           radius: 6,
           fillColor: "#22d3ee",
@@ -148,14 +166,14 @@ export function FlightMap({
           color: "#fff",
           weight: 2,
         }
-      ).bindTooltip(selectedFlight.originInfo.code, { 
+      ).bindTooltip(origin.code, { 
         permanent: false,
         className: "flight-tooltip"
       }).addTo(pathLayer);
 
       // Destination marker
       L.circleMarker(
-        [selectedFlight.destinationInfo.lat, selectedFlight.destinationInfo.lng],
+        [destination.lat, destination.lng],
         {
           radius: 6,
           fillColor: "#f43f5e",
@@ -163,7 +181,7 @@ export function FlightMap({
           color: "#fff",
           weight: 2,
         }
-      ).bindTooltip(selectedFlight.destinationInfo.code, { 
+      ).bindTooltip(destination.code, { 
         permanent: false,
         className: "flight-tooltip"
       }).addTo(pathLayer);
@@ -171,7 +189,7 @@ export function FlightMap({
       // Traveled path (solid)
       L.polyline(
         [
-          [selectedFlight.originInfo.lat, selectedFlight.originInfo.lng],
+          [origin.lat, origin.lng],
           [selectedFlight.latitude, selectedFlight.longitude],
         ],
         {
@@ -185,7 +203,7 @@ export function FlightMap({
       L.polyline(
         [
           [selectedFlight.latitude, selectedFlight.longitude],
-          [selectedFlight.destinationInfo.lat, selectedFlight.destinationInfo.lng],
+          [destination.lat, destination.lng],
         ],
         {
           color: "#22d3ee",

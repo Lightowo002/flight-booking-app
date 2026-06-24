@@ -1,6 +1,6 @@
 "use client";
 
-import type { FlightState } from "@/.next/dev/types/flight";
+import type { FlightState } from "@/types/flight";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plane, Globe, ArrowUp, Gauge, TrendingUp, TrendingDown } from "lucide-react";
 

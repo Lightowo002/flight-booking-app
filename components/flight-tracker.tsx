@@ -171,40 +171,6 @@ export function FlightTracker() {
             {selectedFlight && (
               <FlightStats flights={flights} lastUpdate={lastUpdate} />
             )}
-
-            {/* Legend */}
-            <div className="p-4 rounded-xl bg-card border border-border">
-              <h3 className="text-sm font-medium text-foreground mb-3">Map Legend</h3>
-              <div className="space-y-2.5 text-xs">
-                <div className="flex items-center gap-2.5">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#06b6d4">
-                    <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2S10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
-                  </svg>
-                  <span className="text-muted-foreground">Aircraft in flight</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#22d3ee">
-                    <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2S10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
-                  </svg>
-                  <span className="text-muted-foreground">Selected aircraft</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-4 h-0.5 bg-cyan-400" />
-                  <span className="text-muted-foreground">Traveled route</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-4 h-0.5 bg-cyan-400/40 border-t border-dashed border-cyan-400" />
-                  <span className="text-muted-foreground">Remaining route</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Data Source */}
-            <div className="p-3 rounded-xl bg-muted/50 text-xs text-muted-foreground">
-              <p className="font-medium text-foreground/80">Simulated Flight Data</p>
-              <p className="mt-1">20 realistic routes with live animation</p>
-              <p className="mt-0.5">Updates every 3 seconds</p>
-            </div>
           </div>
         </div>
       </main>
