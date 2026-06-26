@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, User as UserIcon, Plane, Calendar, Shield, LogOut, Ticket } from 'lucide-react';
+import { Mail, User as UserIcon, Plane, Calendar, Phone, IdCard, LogOut, Ticket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth-provider';
 
@@ -11,6 +11,19 @@ function getInitials(firstName: string, lastName: string) {
   const first = firstName.charAt(0);
   const last = lastName.charAt(0);
   return (first + last).toUpperCase() || 'U';
+}
+
+function formatDate(dateString: string) {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-PE', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
 }
 
 export function ProfileView() {
@@ -45,14 +58,19 @@ export function ProfileView() {
       value: user.email,
     },
     {
-      icon: <Shield className="w-5 h-5 text-primary" />,
-      label: 'Account status',
-      value: 'Active',
+      icon: <Phone className="w-5 h-5 text-primary" />,
+      label: 'Phone',
+      value: user.phone || 'Not provided',
+    },
+    {
+      icon: <IdCard className="w-5 h-5 text-primary" />,
+      label: 'Document number',
+      value: user.numeroDocumento || 'Not provided',
     },
     {
       icon: <Calendar className="w-5 h-5 text-primary" />,
       label: 'Member since',
-      value: '2025',
+      value: user.fechaRegistro ? formatDate(user.fechaRegistro) : 'Not available',
     },
   ];
 

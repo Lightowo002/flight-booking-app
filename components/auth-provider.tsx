@@ -6,6 +6,10 @@ export interface AuthUser {
   firstName: string;
   lastName: string;
   email: string;
+  role: string;
+  phone: string;
+  numeroDocumento: string;
+  fechaRegistro: string;
 }
 
 interface RegisterData {
@@ -77,6 +81,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       firstName: data.usuario.nombres,
       lastName: data.usuario.apellidos,
       email: data.usuario.correo,
+      role: data.usuario.rol,
+      phone: data.usuario.telefono,
+      numeroDocumento: data.usuario.numeroDocumento,
+      fechaRegistro: data.usuario.fechaRegistro,
     };
     persist(nextUser);
     return nextUser;
@@ -100,6 +108,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       firstName: data.usuario.nombres,
       lastName: data.usuario.apellidos,
       email: data.usuario.correo,
+      role: data.usuario.rol,
+      phone: data.usuario.telefono,
+      numeroDocumento: data.usuario.numeroDocumento,
+      fechaRegistro: data.usuario.fechaRegistro,
     };
     persist(nextUser);
     return nextUser;
@@ -131,7 +143,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(firstError ? firstError[0] : 'No se pudo registrar');
     }
 
-    const nextUser: AuthUser = { firstName: data.firstName, lastName: data.lastName, email: data.email };
+    const nextUser: AuthUser = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      role: 'Pasajero',
+      phone: data.phone,
+      numeroDocumento: data.numeroDocumento,
+      fechaRegistro: new Date().toISOString(),
+    };
     persist(nextUser);
     return nextUser;
   };
