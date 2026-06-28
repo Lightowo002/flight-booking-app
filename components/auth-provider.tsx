@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface AuthUser {
+  id: string;          // ← agregado: _id de MongoDB
   firstName: string;
   lastName: string;
   email: string;
@@ -64,9 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ correo: email, contraseña: password }),
     });
 
@@ -78,6 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const data = await response.json();
 
     const nextUser: AuthUser = {
+      id: data.usuario.id ?? data.usuario._id ?? '',
       firstName: data.usuario.nombres,
       lastName: data.usuario.apellidos,
       email: data.usuario.correo,
@@ -105,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const data = await response.json();
 
     const nextUser: AuthUser = {
+      id: data.usuario.id ?? data.usuario._id ?? '',
       firstName: data.usuario.nombres,
       lastName: data.usuario.apellidos,
       email: data.usuario.correo,
@@ -134,16 +135,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      if (errorData.message) {
-        throw new Error(errorData.message);
-      }
+      if (errorData.message) throw new Error(errorData.message);
       const firstError = errorData.errors
         ? (Object.values(errorData.errors)[0] as string[])
         : null;
       throw new Error(firstError ? firstError[0] : 'No se pudo registrar');
     }
 
+    // El registro no devuelve el _id, lo dejamos vacío por ahora
     const nextUser: AuthUser = {
+      id: '',
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,

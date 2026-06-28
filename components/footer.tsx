@@ -12,28 +12,28 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
-                <Plane className="w-5 h-5 text-primary" />
+              <div className="p-2 rounded-md bg-accent/10 border border-accent/30">
+                <Plane className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-foreground">SkyTracker</h3>
-                <p className="text-xs text-muted-foreground">Airlines</p>
+                <h3 className="font-display text-lg font-bold text-foreground">SkyTracker</h3>
+                <p className="text-xs text-muted-foreground tracking-[0.15em] uppercase">Airlines</p>
               </div>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              The world's most trusted platform for flight tracking and booking. Fly with confidence, track in real-time, save on every journey.
+              La plataforma de confianza para el seguimiento y reserva de vuelos. Vuela con seguridad, sigue tu vuelo en tiempo real y ahorra en cada viaje.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition">
+              <a href="#" className="text-muted-foreground hover:text-accent transition">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition">
+              <a href="#" className="text-muted-foreground hover:text-accent transition">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition">
+              <a href="#" className="text-muted-foreground hover:text-accent transition">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition">
+              <a href="#" className="text-muted-foreground hover:text-accent transition">
                 <Instagram className="w-5 h-5" />
               </a>
             </div>
@@ -41,26 +41,26 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-6">Product</h4>
+            <h4 className="font-semibold text-foreground mb-6">Producto</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Flight Tracker
+                <Link href="/" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Seguimiento de vuelos
                 </Link>
               </li>
               <li>
-                <Link href="/booking" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Book Flights
+                <Link href="/booking" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Reservar vuelos
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  My Bookings
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Mis reservas
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Flight Status
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Estado de vuelo
                 </Link>
               </li>
             </ul>
@@ -68,26 +68,26 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold text-foreground mb-6">Support</h4>
+            <h4 className="font-semibold text-foreground mb-6">Soporte</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Help Center
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Centro de ayuda
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Contact Us
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Contáctanos
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Terms of Service
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Términos de servicio
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                  Privacy Policy
+                <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                  Política de privacidad
                 </Link>
               </li>
             </ul>
@@ -95,24 +95,24 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-foreground mb-6">Contact</h4>
+            <h4 className="font-semibold text-foreground mb-6">Contacto</h4>
             <ul className="space-y-4 text-sm">
               <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                <a href="mailto:info@skytracker.com" className="text-muted-foreground hover:text-primary transition">
+                <Mail className="w-4 h-4 text-accent flex-shrink-0" />
+                <a href="mailto:info@skytracker.com" className="text-muted-foreground hover:text-accent transition">
                   info@skytracker.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-primary flex-shrink-0" />
-                <a href="tel:+34900000000" className="text-muted-foreground hover:text-primary transition">
+                <Phone className="w-4 h-4 text-accent flex-shrink-0" />
+                <a href="tel:+34900000000" className="text-muted-foreground hover:text-accent transition">
                   +34 900 000 000
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                 <span className="text-muted-foreground">
-                  Flight Center, Madrid, Spain
+                  Centro de Vuelos, Madrid, España
                 </span>
               </li>
             </ul>
@@ -123,16 +123,16 @@ export function Footer() {
         <div className="border-t border-border pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-muted-foreground text-sm">
-              © 2024 SkyTracker Airlines. All rights reserved.
+              © 2026 SkyTracker Airlines. Todos los derechos reservados.
             </p>
             <div className="flex items-center gap-6">
-              <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                Privacy
+              <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                Privacidad
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
-                Terms
+              <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
+                Términos
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition text-sm">
+              <Link href="#" className="text-muted-foreground hover:text-accent transition text-sm">
                 Cookies
               </Link>
             </div>

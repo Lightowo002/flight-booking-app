@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, Inter, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -9,7 +9,8 @@ import { GlobalNav } from '@/components/global-nav'
 import { AppShell } from '@/components/app-shell'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
+const _display = Playfair_Display({ subsets: ['latin'], variable: '--font-display', weight: ['600', '700', '800'] });
+const _sans = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 const GOOGLE_CLIENT_ID = '829046570930-bp5aupuas7kup7h4q9jensc90lt02k5h.apps.googleusercontent.com';
@@ -43,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${_display.variable} ${_sans.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground">
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <ThemeProvider>

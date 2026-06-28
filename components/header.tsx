@@ -27,14 +27,14 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-            <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
-              <Plane className="w-6 h-6 text-primary" />
+            <div className="p-2.5 rounded-md bg-accent/10 border border-accent/30">
+              <Plane className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground tracking-tight">
-                Sky<span className="text-primary">Tracker</span>
+              <h1 className="font-display text-2xl font-bold text-foreground tracking-tight">
+                Sky<span className="text-accent">Tracker</span>
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground tracking-[0.15em] uppercase">
                 Flight Tracking & Booking
               </p>
             </div>
@@ -50,7 +50,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
                 <Radio className="w-4 h-4 text-primary" />
               </div>
               <span className="text-sm text-foreground font-medium">
-                {flightCount} active
+                {flightCount} activos
               </span>
             </div>
 
@@ -61,7 +61,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
                 className="gap-2 rounded-lg transition-colors"
               >
                 <Ticket className="w-4 h-4" />
-                <span className="hidden sm:inline">Book</span>
+                <span className="hidden sm:inline">Reservar</span>
               </Button>
             </Link>
 
@@ -75,7 +75,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
               <RefreshCw
                 className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
               />
-              <span className="hidden sm:inline">Refresh</span>
+              <span className="hidden sm:inline">Actualizar</span>
             </Button>
 
             <Button
@@ -83,7 +83,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
               size="sm"
               onClick={toggleTheme}
               className="rounded-lg transition-colors"
-              title="Toggle theme"
+              title="Cambiar tema"
             >
               {theme === 'light' ? (
                 <Moon className="w-4 h-4" />
@@ -93,7 +93,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
             </Button>
 
             {user ? (
-              <Link href="/profile" title="View profile">
+              <Link href="/profile" title="Ver perfil">
                 <Button
                   variant="outline"
                   size="sm"
@@ -113,7 +113,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
                   size="sm"
                   className="rounded-lg"
                 >
-                  Sign In
+                  Iniciar sesión
                 </Button>
               </Link>
             )}

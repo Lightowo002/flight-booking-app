@@ -1,37 +1,37 @@
 "use client";
 
-import { Globe, Award, Users, BarChart3, Zap, Shield } from "lucide-react";
+import { Globe, Award, Headset, Radio, Zap, ShieldCheck } from "lucide-react";
 
 const features = [
   {
     icon: Globe,
-    title: "Global Coverage",
-    description: "Connect to over 500 airports worldwide with real-time flight tracking"
+    title: "Cobertura global",
+    description: "Conecta con más de 500 aeropuertos en todo el mundo y sigue cualquier vuelo en tiempo real."
   },
   {
     icon: Award,
-    title: "Best Prices",
-    description: "Competitive rates and exclusive deals on all routes and flight classes"
+    title: "Los mejores precios",
+    description: "Tarifas competitivas y ofertas exclusivas en todas las rutas y clases de vuelo."
   },
   {
-    icon: Users,
-    title: "24/7 Support",
-    description: "Our customer service team is always ready to help you"
+    icon: Headset,
+    title: "Soporte 24/7",
+    description: "Nuestro equipo de atención al cliente está disponible siempre que lo necesites."
   },
   {
-    icon: BarChart3,
-    title: "Live Updates",
-    description: "Real-time flight status, delays, and gate information"
+    icon: Radio,
+    title: "Seguimiento en vivo",
+    description: "Estado del vuelo, retrasos y puertas de embarque actualizados al instante."
   },
   {
     icon: Zap,
-    title: "Fast Booking",
-    description: "Book your flight in minutes with our streamlined process"
+    title: "Reserva en minutos",
+    description: "Un proceso simplificado para que reserves tu vuelo sin complicaciones."
   },
   {
-    icon: Shield,
-    title: "Secure Payments",
-    description: "Your data is protected with enterprise-grade security"
+    icon: ShieldCheck,
+    title: "Pagos protegidos",
+    description: "Tus datos viajan protegidos con seguridad de nivel empresarial."
   }
 ];
 
@@ -40,11 +40,12 @@ export function FeaturesSection() {
     <section className="py-24 px-6">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Why Choose SkyTracker?
+          <span className="gold-rule mx-auto mb-6"></span>
+          <h2 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-6">
+            Por qué elegir SkyTracker
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We're committed to making your travel experience smooth, affordable, and enjoyable
+            Combinamos precisión y elegancia para que viajar sea tan placentero como el destino.
           </p>
         </div>
 
@@ -52,9 +53,9 @@ export function FeaturesSection() {
           {features.map((feature, idx) => {
             const Icon = feature.icon;
             return (
-              <div key={idx} className="p-8 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
-                  <Icon className="w-6 h-6 text-primary" />
+              <div key={idx} className="p-8 rounded-md border border-border bg-card hover:border-accent/40 transition-colors">
+                <div className="w-12 h-12 rounded-md bg-accent/10 flex items-center justify-center mb-6">
+                  <Icon className="w-6 h-6 text-accent" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">
                   {feature.title}

@@ -5,21 +5,21 @@ import { Button } from "@/components/ui/button";
 
 const offers = [
   {
-    title: "Early Bird Special",
-    description: "Book 30 days in advance",
-    discount: "Up to 40% OFF",
+    title: "Reserva anticipada",
+    description: "Compra con 30 días de anticipación",
+    discount: "Hasta 40% OFF",
     color: "from-primary/10 to-primary/5"
   },
   {
-    title: "Weekend Getaway",
-    description: "Travel Friday to Sunday",
-    discount: "Up to 30% OFF",
+    title: "Escapada de fin de semana",
+    description: "Viaja de viernes a domingo",
+    discount: "Hasta 30% OFF",
     color: "from-accent/10 to-accent/5"
   },
   {
-    title: "Business Class Upgrade",
-    description: "Selected routes only",
-    discount: "From $199",
+    title: "Mejora a Clase Ejecutiva",
+    description: "Solo en rutas seleccionadas",
+    discount: "Desde €199",
     color: "from-blue-500/10 to-blue-400/5"
   }
 ];
@@ -29,11 +29,12 @@ export function OffersSection() {
     <section className="py-24 px-6">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Exclusive Offers
+          <span className="gold-rule mx-auto mb-6"></span>
+          <h2 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            Ofertas exclusivas
           </h2>
           <p className="text-lg text-muted-foreground">
-            Limited time deals on your favorite destinations
+            Promociones por tiempo limitado en tus destinos favoritos
           </p>
         </div>
 
@@ -41,7 +42,7 @@ export function OffersSection() {
           {offers.map((offer, idx) => (
             <div
               key={idx}
-              className={`relative p-8 rounded-xl border border-border overflow-hidden group hover:shadow-lg transition-all`}
+              className={`relative p-8 rounded-md border border-border overflow-hidden group hover:shadow-lg transition-all`}
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${offer.color} -z-10`}></div>
 
@@ -55,28 +56,28 @@ export function OffersSection() {
               </div>
 
               <div className="mb-8">
-                <div className="text-4xl font-bold text-primary mb-2">
+                <div className="font-display text-4xl font-bold text-accent mb-2">
                   {offer.discount}
                 </div>
               </div>
 
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-sm text-foreground">Instant confirmation</span>
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-sm text-foreground">Confirmación instantánea</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-sm text-foreground">Free cancellation</span>
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-sm text-foreground">Cancelación gratuita</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-sm text-foreground">24/7 support</span>
+                  <Check className="w-5 h-5 text-accent" />
+                  <span className="text-sm text-foreground">Soporte 24/7</span>
                 </div>
               </div>
 
-              <Button className="w-full rounded-lg">
-                Claim Offer
+              <Button className="w-full">
+                Aprovechar oferta
               </Button>
             </div>
           ))}

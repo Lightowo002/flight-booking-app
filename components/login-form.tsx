@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
@@ -12,6 +13,8 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   const { login, loginWithGoogle } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +35,7 @@ export function LoginForm() {
 
     try {
       await login(email, password);
-      router.push('/');
+      router.push(redirectTo);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -56,7 +59,7 @@ export function LoginForm() {
 
     try {
       await loginWithGoogle(credentialResponse.credential);
-      router.push('/');
+      router.push(redirectTo);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

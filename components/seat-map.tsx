@@ -21,7 +21,6 @@ interface CabinConfig {
   icon: React.ReactNode;
 }
 
-// Each cabin defines its rows and seat columns. Wider classes have fewer seats per row.
 const cabins: CabinConfig[] = [
   {
     id: 'first',
@@ -61,18 +60,16 @@ const cabins: CabinConfig[] = [
   },
 ];
 
-// Deterministic set of occupied seats so the map is stable across renders.
-const occupiedSeats = new Set([
-  '1A', '2F', '3C', '4D', '5A', '7B', '8E', '10C', '11A', '12F', '13D', '14B', '6E', '9F',
-]);
-
 interface SeatMapProps {
   requiredSeats: number;
   selectedSeats: string[];
   onToggleSeat: (seat: SeatInfo) => void;
+  occupiedSeats?: string[]; // ← viene del backend
 }
 
-export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapProps) {
+export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat, occupiedSeats = [] }: SeatMapProps) {
+  const occupiedSet = useMemo(() => new Set(occupiedSeats), [occupiedSeats]);
+
   const seatToCabin = useMemo(() => {
     const map = new Map<string, CabinConfig>();
     for (const cabin of cabins) {
@@ -86,13 +83,16 @@ export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapP
   }, []);
 
   const handleClick = (seatId: string) => {
-    if (occupiedSeats.has(seatId)) return;
+    if (occupiedSet.has(seatId)) return;
     const cabin = seatToCabin.get(seatId);
     if (!cabin) return;
     const isSelected = selectedSeats.includes(seatId);
     if (!isSelected && selectedSeats.length >= requiredSeats) return;
     onToggleSeat({ id: seatId, cabin: cabin.id, price: cabin.price });
   };
+
+  const totalSeats = cabins.reduce((sum, c) => sum + c.rows.length * c.columns.length, 0);
+  const occupiedCount = occupiedSeats.length;
 
   return (
     <div className="space-y-6">
@@ -110,6 +110,11 @@ export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapP
           <span className="w-5 h-5 rounded-md bg-secondary border border-border opacity-50" />
           <span className="text-muted-foreground">Ocupado</span>
         </div>
+        {occupiedCount > 0 && (
+          <span className="ml-auto text-muted-foreground">
+            {totalSeats - occupiedCount} disponibles · {occupiedCount} ocupados
+          </span>
+        )}
       </div>
 
       {/* Aircraft nose */}
@@ -122,7 +127,6 @@ export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapP
       <div className="rounded-2xl border border-border bg-muted/30 p-4 md:p-6 space-y-8">
         {cabins.map((cabin) => (
           <div key={cabin.id}>
-            {/* Cabin header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 text-primary">
@@ -138,7 +142,6 @@ export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapP
               </span>
             </div>
 
-            {/* Seat grid */}
             <div className="space-y-2">
               {cabin.rows.map((row) => {
                 const half = Math.ceil(cabin.columns.length / 2);
@@ -152,20 +155,19 @@ export function SeatMap({ requiredSeats, selectedSeats, onToggleSeat }: SeatMapP
                         <SeatButton
                           key={`${row}${col}`}
                           seatId={`${row}${col}`}
-                          occupied={occupiedSeats.has(`${row}${col}`)}
+                          occupied={occupiedSet.has(`${row}${col}`)}
                           selected={selectedSeats.includes(`${row}${col}`)}
                           onClick={handleClick}
                         />
                       ))}
                     </div>
-                    {/* Aisle */}
                     <span className="w-4" />
                     <div className="flex gap-1.5">
                       {right.map((col) => (
                         <SeatButton
                           key={`${row}${col}`}
                           seatId={`${row}${col}`}
-                          occupied={occupiedSeats.has(`${row}${col}`)}
+                          occupied={occupiedSet.has(`${row}${col}`)}
                           selected={selectedSeats.includes(`${row}${col}`)}
                           onClick={handleClick}
                         />
