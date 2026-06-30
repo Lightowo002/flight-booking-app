@@ -230,6 +230,7 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
         pasajeros: passengers.map((p) => ({
           nombres: p.name,
           documento: p.documento,
+          correo: p.email,
         })),
         asientos: seats.map((s) => s.id),
         clases: seats.map((s) => claseLabels[s.cabin] || 'Económica'),

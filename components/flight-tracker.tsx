@@ -112,9 +112,9 @@ export function FlightTracker() {
       />
 
       <main className="flex-1 container mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[calc(100vh-120px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:h-[calc(100vh-120px)]">
           {/* Left Sidebar - Flight List */}
-          <div className="lg:col-span-1 h-full overflow-hidden">
+          <div className="lg:col-span-1 h-[400px] lg:h-full overflow-hidden">
             <FlightList
               flights={flights}
               selectedFlight={selectedFlight}
@@ -123,7 +123,7 @@ export function FlightTracker() {
           </div>
 
           {/* Map Area */}
-          <div className="lg:col-span-2 h-full min-h-[500px] relative">
+          <div className="lg:col-span-2 h-[500px] lg:h-full relative z-0">
             <FlightMap
               flights={flights}
               selectedFlight={selectedFlight}
@@ -158,7 +158,7 @@ export function FlightTracker() {
           </div>
 
           {/* Right Sidebar - Details & Stats */}
-          <div className="lg:col-span-1 space-y-4 overflow-y-auto">
+          <div className="lg:col-span-1 space-y-4 lg:h-full lg:overflow-y-auto pb-4">
             {selectedFlight ? (
               <FlightDetails
                 flight={selectedFlight}

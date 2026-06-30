@@ -26,19 +26,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-            <div className="p-2.5 rounded-md bg-accent/10 border border-accent/30">
-              <Plane className="w-6 h-6 text-accent" />
-            </div>
-            <div>
-              <h1 className="font-display text-2xl font-bold text-foreground tracking-tight">
-                Sky<span className="text-accent">Tracker</span>
-              </h1>
-              <p className="text-xs text-muted-foreground tracking-[0.15em] uppercase">
-                Flight Tracking & Booking
-              </p>
-            </div>
-          </Link>
+
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-3 px-5 py-2.5 rounded-lg bg-muted/50 border border-border">
@@ -54,29 +42,8 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
               </span>
             </div>
 
-            <Link href="/booking">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2 rounded-lg transition-colors"
-              >
-                <Ticket className="w-4 h-4" />
-                <span className="hidden sm:inline">Reservar</span>
-              </Button>
-            </Link>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRefresh}
-              disabled={isLoading}
-              className="gap-2 rounded-lg transition-colors"
-            >
-              <RefreshCw
-                className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
-              />
-              <span className="hidden sm:inline">Actualizar</span>
-            </Button>
+
 
             <Button
               variant="outline"
@@ -92,31 +59,7 @@ export function Header({ isLoading, onRefresh, flightCount }: HeaderProps) {
               )}
             </Button>
 
-            {user ? (
-              <Link href="/profile" title="Ver perfil">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-lg gap-2 pl-2"
-                >
-                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
-                    {getInitials(user.firstName, user.lastName)}
-                  </span>
-                  <span className="hidden sm:inline max-w-[120px] truncate">
-                    {user.firstName}
-                  </span>
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/auth/login">
-                <Button
-                  size="sm"
-                  className="rounded-lg"
-                >
-                  Iniciar sesión
-                </Button>
-              </Link>
-            )}
+
           </div>
         </div>
       </div>

@@ -147,7 +147,7 @@ export function GlobalNav() {
   return (
     <TooltipProvider delayDuration={200}>
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between bg-background/95 backdrop-blur-md border-b border-border px-4 py-3">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-[2000] flex items-center justify-between bg-background/95 backdrop-blur-md border-b border-border px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
           <div className="p-1.5 rounded-md bg-accent/10 border border-accent/30">
             <Plane className="w-4 h-4 text-accent" />
@@ -168,7 +168,7 @@ export function GlobalNav() {
       {/* Mobile drawer overlay */}
       {mobileOpen && (
         <button
-          className="md:hidden fixed inset-0 z-50 bg-foreground/40 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 z-[2000] bg-foreground/40 backdrop-blur-sm"
           aria-label="Cerrar menú de navegación"
           onClick={() => setMobileOpen(false)}
         />
@@ -176,7 +176,7 @@ export function GlobalNav() {
 
       {/* Mobile drawer */}
       <aside
-        className={`md:hidden fixed left-0 top-0 z-50 h-screen w-72 bg-background border-r border-border flex flex-col transition-transform duration-300 ${
+        className={`md:hidden fixed left-0 top-0 z-[2001] h-screen w-72 bg-background border-r border-border flex flex-col transition-transform duration-300 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         aria-hidden={!mobileOpen}
