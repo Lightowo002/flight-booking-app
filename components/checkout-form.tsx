@@ -53,7 +53,6 @@ function validateCard(card: { cardNumber: string; holder: string; expiry: string
   return errs;
 }
 
-// ——— Pantalla de bloqueo si no está logueado ———
 function LoginRequiredScreen({ returnPath }: { returnPath: string }) {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
@@ -61,14 +60,12 @@ function LoginRequiredScreen({ returnPath }: { returnPath: string }) {
         <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
           <Lock className="w-8 h-8 text-muted-foreground" />
         </div>
-
         <div>
           <h2 className="text-2xl font-bold text-foreground mb-2">Inicia sesión para continuar</h2>
           <p className="text-muted-foreground text-sm">
             Necesitas una cuenta para comprar boletos. Tus datos se rellenarán automáticamente al iniciar sesión.
           </p>
         </div>
-
         <div className="space-y-3 pt-2">
           <Link href={`/auth/login?redirect=${encodeURIComponent(returnPath)}`} className="block">
             <Button className="w-full flex items-center justify-center gap-2">
@@ -93,7 +90,8 @@ function LoginRequiredScreen({ returnPath }: { returnPath: string }) {
   );
 }
 
-// ——— Componente principal ———
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://flightbookingapi-production.up.railway.app';
+
 export function CheckoutForm({ flightId }: CheckoutProps) {
   const { user, isReady } = useAuth();
   const searchParams = useSearchParams();
@@ -118,7 +116,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
 
   const initialPassengers = parseInt(searchParams.get('passengers') || '1');
 
-  // Pasajero 1 siempre pre-rellenado con los datos del usuario logueado
   const buildPassengers = (count: number): Passenger[] =>
     Array.from({ length: count }, (_, i) =>
       i === 0
@@ -141,7 +138,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
   const [errors, setErrors] = useState<string[]>([]);
   const [paying, setPaying] = useState(false);
 
-  // Cuando el usuario carga (puede tardar un tick), actualizar pasajero 1
   useEffect(() => {
     if (user) {
       setPassengers((prev) =>
@@ -160,7 +156,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
   }, [user]);
 
   const handlePassengerChange = (index: number, field: keyof Passenger, value: string) => {
-    // El pasajero 1 tiene sus datos bloqueados si son del usuario logueado
     const updated = [...passengers];
     updated[index] = { ...updated[index], [field]: value };
     setPassengers(updated);
@@ -186,7 +181,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
     setErrors([]);
 
     try {
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7118';
       const res = await fetch(`${API_BASE}/api/boletos/vuelo/${flightData.id}/asientos-ocupados`);
       if (res.ok) {
         const data = await res.json();
@@ -205,8 +199,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
     );
   };
 
-
-
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = paymentMethod === 'card' ? validateCard(cardDetails) : [];
@@ -215,8 +207,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
     setPaying(true);
 
     try {
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7118';
-
       const claseLabels: Record<string, string> = {
         first: 'Primera clase',
         business: 'Business',
@@ -278,7 +268,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
   ];
   const currentStepIndex = steps.findIndex((s) => s.id === step);
 
-  // Mientras carga la sesión, mostrar nada (evita flash)
   if (!isReady) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -287,13 +276,11 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
     );
   }
 
-  // Si no está logueado, bloquear
   if (!user) {
     const currentPath = typeof window !== 'undefined' ? window.location.pathname + window.location.search : '/booking/checkout';
     return <LoginRequiredScreen returnPath={currentPath} />;
   }
 
-  // ——— Confirmación ———
   if (step === 'confirmation') {
     return (
       <div className="min-h-screen bg-background py-12 px-4">
@@ -356,12 +343,9 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
     );
   }
 
-  // ——— Formulario ———
   return (
     <div className="min-h-screen bg-background py-12 px-4 pb-24 md:pb-12">
       <div className="max-w-4xl mx-auto">
-
-        {/* Step Indicator */}
         <div className="flex items-center justify-center gap-2 md:gap-4 mb-12">
           {steps.map((s, index) => {
             const reached = index <= currentStepIndex;
@@ -383,7 +367,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
           })}
         </div>
 
-        {/* Errores */}
         {errors.length > 0 && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
             <p className="text-red-500 font-semibold text-sm mb-1">Corrige los siguientes errores:</p>
@@ -396,14 +379,12 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
 
-            {/* ——— PASO 1: PASAJEROS ——— */}
             {step === 'passengers' && (
               <div className="bg-card rounded-2xl border border-border p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-2">Información de pasajeros</h2>
                 <p className="text-muted-foreground text-sm mb-6">
                   Los datos del primer pasajero se han rellenado con tu cuenta.
                 </p>
-
                 <div className="space-y-6">
                   {passengers.map((passenger, index) => {
                     const isAccountHolder = index === 0;
@@ -428,7 +409,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
                             </button>
                           )}
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm text-muted-foreground mb-2">
@@ -439,7 +419,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
                               placeholder="Juan Pérez García"
                               value={passenger.name}
                               onChange={(e) => handlePassengerChange(index, 'name', e.target.value)}
-                              // El pasajero 1 puede editar igual, por si quiere corregirlo
                             />
                           </div>
                           <div>
@@ -476,7 +455,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
                             />
                           </div>
                         </div>
-
                         {isAccountHolder && (
                           <p className="text-xs text-muted-foreground">
                             Datos tomados de tu cuenta. Puedes editarlos si es necesario para este vuelo.
@@ -486,7 +464,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
                     );
                   })}
                 </div>
-
                 {passengers.length < 9 && (
                   <Button onClick={handleAddPassenger} variant="outline" className="w-full mt-6">
                     + Agregar otro pasajero
@@ -498,7 +475,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
               </div>
             )}
 
-            {/* ——— PASO 2: ASIENTOS ——— */}
             {step === 'seats' && (
               <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
                 <div className="flex items-center justify-between mb-2">
@@ -527,7 +503,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
               </div>
             )}
 
-            {/* ——— PASO 3: PAGO ——— */}
             {step === 'payment' && (
               <div className="bg-card rounded-2xl border border-border p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Método de pago</h2>
@@ -631,7 +606,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
             )}
           </div>
 
-          {/* ——— SIDEBAR ——— */}
           <div className="lg:col-span-1">
             <div className="sticky top-8 bg-card rounded-2xl border border-border p-6 space-y-6">
               <div className="relative h-40 w-full rounded-lg overflow-hidden">
@@ -642,7 +616,6 @@ export function CheckoutForm({ flightId }: CheckoutProps) {
                 </div>
               </div>
 
-              {/* Usuario logueado */}
               <div className="flex items-center gap-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
                   <span className="text-primary-foreground text-xs font-bold">

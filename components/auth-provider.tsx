@@ -35,7 +35,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 const STORAGE_KEY = 'skytracker-user';
-const API_URL = 'https://localhost:7118/api/auth';
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);

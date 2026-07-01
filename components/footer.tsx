@@ -33,7 +33,7 @@ export function Footer() {
               <a href="#" className="text-muted-foreground hover:text-accent transition">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-accent transition">
+              <a href="https://www.instagram.com/joel_arias_l/" className="text-muted-foreground hover:text-accent transition">
                 <Instagram className="w-5 h-5" />
               </a>
             </div>
@@ -106,13 +106,13 @@ export function Footer() {
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-accent flex-shrink-0" />
                 <a href="tel:+34900000000" className="text-muted-foreground hover:text-accent transition">
-                  +34 900 000 000
+                  +51 952 859 521
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                 <span className="text-muted-foreground">
-                  Centro de Vuelos, Madrid, España
+                  Centro de Vuelos, Lima, Perú
                 </span>
               </li>
             </ul>

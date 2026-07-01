@@ -1,9 +1,10 @@
+// components/FlightMap.tsx
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { FlightState, SelectedFlight, FlightAPIResponse } from "@/types/flight";
+import type { FlightState, SelectedFlight } from "@/types/flight";
 
 interface FlightMapProps {
   flights: FlightState[];
@@ -39,25 +40,29 @@ export function FlightMap({
   selectedFlight,
   onSelectFlight,
 }: FlightMapProps) {
-  const mapRef = useRef<L.Map | null>(null);
+  // ✨ CAMBIO CLAVE: Usar estado en lugar de Ref para que React sepa cuándo el mapa está listo
+  const [map, setMap] = useState<L.Map | null>(null);
+  
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const pathLayerRef = useRef<L.LayerGroup | null>(null);
   const isInitializedRef = useRef(false);
   const onSelectFlightRef = useRef(onSelectFlight);
 
-  // Keep callback ref updated
+  // Mantener la referencia del callback actualizada
   useEffect(() => {
     onSelectFlightRef.current = onSelectFlight;
   }, [onSelectFlight]);
 
-  // Initialize map once
+  // 1. Inicializar el mapa una sola vez
   useEffect(() => {
     if (!mapContainerRef.current || isInitializedRef.current) return;
     isInitializedRef.current = true;
 
-    const map = L.map(mapContainerRef.current, {
-      center: [40.4168, -3.7038], // Madrid as center
+    console.log("🗺️ Inicializando el mapa de Leaflet...");
+
+    const mapInstance = L.map(mapContainerRef.current, {
+      center: [-12.0464, -77.0428], // Centrado en Sudamérica / Perú
       zoom: 4,
       zoomControl: true,
       attributionControl: false,
@@ -66,31 +71,37 @@ export function FlightMap({
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       subdomains: "abcd",
       maxZoom: 19,
-    }).addTo(map);
+    }).addTo(mapInstance);
 
-    // Create layer group for paths
-    pathLayerRef.current = L.layerGroup().addTo(map);
+    pathLayerRef.current = L.layerGroup().addTo(mapInstance);
 
-    mapRef.current = map;
+    // Guardamos la instancia en el estado de React
+    setMap(mapInstance);
 
     return () => {
-      map.remove();
-      mapRef.current = null;
+      console.log("🗑️ Limpiando instancia del mapa");
+      mapInstance.remove();
+      setMap(null);
       pathLayerRef.current = null;
       isInitializedRef.current = false;
       markersRef.current.clear();
     };
   }, []);
 
-  // Update markers when flights change
+  // 2. Dibujar o actualizar marcadores cuando cambien los vuelos O el mapa esté listo
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
+    // Si el mapa aún no se ha creado, no hacemos nada y esperamos al siguiente ciclo
+    if (!map) {
+      console.log("⏳ Esperando que el mapa esté listo para dibujar marcadores...");
+      return;
+    }
+
+    console.log(`✈️ Dibujando ${flights.length} aviones en el mapa...`);
 
     const currentMarkers = markersRef.current;
     const flightIds = new Set(flights.map((f) => f.icao24));
 
-    // Remove old markers
+    // Eliminar marcadores viejos
     currentMarkers.forEach((marker, id) => {
       if (!flightIds.has(id)) {
         marker.remove();
@@ -98,7 +109,7 @@ export function FlightMap({
       }
     });
 
-    // Add or update markers
+    // Agregar o actualizar marcadores nuevos
     flights.forEach((flight) => {
       if (typeof flight.latitude !== "number" || typeof flight.longitude !== "number") {
         return;
@@ -128,24 +139,20 @@ export function FlightMap({
         currentMarkers.set(flight.icao24, marker);
       }
     });
-  }, [flights, selectedFlight?.icao24]);
+  }, [flights, selectedFlight?.icao24, map]); // ✨ Agregado 'map' como dependencia
 
-  // Draw flight path for selected flight
+// 3. Dibujar rutas del avión seleccionado
   useEffect(() => {
     const pathLayer = pathLayerRef.current;
-    if (!pathLayer) return;
+    if (!pathLayer || !map) return;
 
-    // Clear previous paths
     pathLayer.clearLayers();
-
     if (!selectedFlight) return;
 
-    if (typeof selectedFlight.latitude !== "number" || typeof selectedFlight.longitude !== "number") {
-      return;
-    }
-
+    // Validación segura: Accedemos a las propiedades con encadenamiento opcional
     const origin = selectedFlight.originInfo;
     const destination = selectedFlight.destinationInfo;
+
     const hasValidRoute =
       origin &&
       destination &&
@@ -154,66 +161,50 @@ export function FlightMap({
       typeof destination.lat === "number" &&
       typeof destination.lng === "number";
 
-    // Draw route if we have a complete, valid origin/destination
+    // Si los datos son válidos, procedemos a dibujar
     if (hasValidRoute) {
-      // Origin marker
-      L.circleMarker(
-        [origin.lat, origin.lng],
-        {
-          radius: 6,
-          fillColor: "#22d3ee",
-          fillOpacity: 0.9,
-          color: "#fff",
-          weight: 2,
-        }
-      ).bindTooltip(origin.code, { 
-        permanent: false,
-        className: "flight-tooltip"
+      // TypeScript ahora sabe que origin y destination existen aquí
+      const oLat = origin.lat;
+      const oLng = origin.lng;
+      const dLat = destination.lat;
+      const dLng = destination.lng;
+
+      L.circleMarker([oLat, oLng], {
+        radius: 6,
+        fillColor: "#22d3ee",
+        fillOpacity: 0.9,
+        color: "#fff",
+        weight: 2,
+      })
+        .bindTooltip(origin.code, { permanent: false, className: "flight-tooltip" })
+        .addTo(pathLayer);
+
+      L.circleMarker([dLat, dLng], {
+        radius: 6,
+        fillColor: "#f43f5e",
+        fillOpacity: 0.9,
+        color: "#fff",
+        weight: 2,
+      })
+        .bindTooltip(destination.code, { permanent: false, className: "flight-tooltip" })
+        .addTo(pathLayer);
+
+      // Dibujar línea de origen a avión
+      L.polyline([[oLat, oLng], [selectedFlight.latitude, selectedFlight.longitude]], {
+        color: "#22d3ee",
+        weight: 3,
+        opacity: 0.8,
       }).addTo(pathLayer);
 
-      // Destination marker
-      L.circleMarker(
-        [destination.lat, destination.lng],
-        {
-          radius: 6,
-          fillColor: "#f43f5e",
-          fillOpacity: 0.9,
-          color: "#fff",
-          weight: 2,
-        }
-      ).bindTooltip(destination.code, { 
-        permanent: false,
-        className: "flight-tooltip"
+      // Dibujar línea de avión a destino
+      L.polyline([[selectedFlight.latitude, selectedFlight.longitude], [dLat, dLng]], {
+        color: "#22d3ee",
+        weight: 2,
+        opacity: 0.4,
+        dashArray: "8, 12",
       }).addTo(pathLayer);
-
-      // Traveled path (solid)
-      L.polyline(
-        [
-          [origin.lat, origin.lng],
-          [selectedFlight.latitude, selectedFlight.longitude],
-        ],
-        {
-          color: "#22d3ee",
-          weight: 3,
-          opacity: 0.8,
-        }
-      ).addTo(pathLayer);
-
-      // Remaining path (dashed)
-      L.polyline(
-        [
-          [selectedFlight.latitude, selectedFlight.longitude],
-          [destination.lat, destination.lng],
-        ],
-        {
-          color: "#22d3ee",
-          weight: 2,
-          opacity: 0.4,
-          dashArray: "8, 12",
-        }
-      ).addTo(pathLayer);
     }
-  }, [selectedFlight]);
+  }, [selectedFlight, map]);
 
   return (
     <div className="relative w-full h-full">

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 
-const API_URL = 'https://localhost:7118/api/auth';
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
 
 export function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
