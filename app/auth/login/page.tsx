@@ -1,6 +1,7 @@
 import { Plane } from 'lucide-react';
 import { LoginForm } from '@/components/login-form';
 import Link from 'next/link';
+import { Suspense } from 'react'; // <-- Importación necesaria
 
 export const metadata = {
   title: 'Sign In - SkyTracker',
@@ -78,7 +79,10 @@ export default function LoginPage() {
                 <h3 className="text-3xl font-bold text-foreground mb-3">Sign In</h3>
                 <p className="text-muted-foreground">Access your SkyTracker account</p>
               </div>
-              <LoginForm />
+              {/* Aquí envolvemos el LoginForm en Suspense para evitar el error de Next.js */}
+              <Suspense fallback={null}>
+                <LoginForm />
+              </Suspense>
             </div>
           </div>
         </div>
