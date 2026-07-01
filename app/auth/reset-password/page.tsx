@@ -1,6 +1,7 @@
 import { Plane } from 'lucide-react';
 import { ResetPasswordForm } from '@/components/reset-password-form';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Restablecer contraseña - SkyTracker',
@@ -24,7 +25,10 @@ export default function ResetPasswordPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <ResetPasswordForm />
+        {/* Envolvemos el componente en Suspense para evitar el error de useSearchParams durante el build */}
+        <Suspense fallback={<div className="text-muted-foreground">Cargando formulario...</div>}>
+          <ResetPasswordForm />
+        </Suspense>
       </main>
     </div>
   );
